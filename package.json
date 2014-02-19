@@ -1,0 +1,15 @@
+{
+  "name": "nyaacat_template",
+  "version": "0.0.1",
+  "script": {
+    "build": "grunt"
+  },
+  "dependencies": {
+    "grunt": "~0.4.2",
+    "grunt-contrib-stylus": "~0.12.0",
+    "grunt-contrib-coffee": "~0.10.1",
+    "grunt-contrib-jade": "~0.10.0",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-css": "~0.5.4"
+  }
+}
