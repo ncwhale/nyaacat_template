@@ -1,9 +1,10 @@
-log = require './log'
+#在此配置生成参数
 input_directory = 'webroot/'
 locales = ['zh_CN', 'en', 'ca']
 output_directory = '../nyaacat_static_page/'
 grunt_modules = ['grunt-contrib-concat', 'grunt-css']
 
+#伪对象拷贝解构
 clone = (s)->
   o = {}
   for k,v of s
@@ -13,7 +14,9 @@ clone = (s)->
       o[k] = v
   o
 
+log = require './log'
 i18n = require 'i18n'
+
 #配置i18n参数
 i18n.configure
   locales: locales 
@@ -52,18 +55,15 @@ grunt_modules.push 'grunt-contrib-jade'
 #生成语言参数模板
 for lang in locales
   grunt_config.jade[lang] = clone(grunt_config.jade.compile)
-  #grunt_config.jade[lang].options.data = grunt_config.jade.compile.options.data.clone()
   grunt_config.jade[lang].options.data.locale = lang
 
-#log grunt_config.jade.zh_CN.options
+#狡兔死，走狗烹
+delete grunt_config.jade.compile
 
 for file in fs.readdirSync input_directory
   if file.toLowerCase().slice(-5)=='.jade' && fs.lstatSync("#{input_directory}/#{file}").isFile()
     for lang in locales
       grunt_config.jade[lang].files["#{output_directory}#{file.slice(0, -5)}.html.#{lang}"] = ["#{input_directory}/#{file}", "#{input_directory}/template/*.jade"]
-
-
-#        "{output_directory}/index.html.#{locale}": []
 
 module.exports = (grunt) ->
 
