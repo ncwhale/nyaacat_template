@@ -21,7 +21,7 @@ i18n.configure
   directory: './webroot/locales'
   updateFiles: true
   indent: '  '
-  extension: '.js'
+  extension: '.json'
 i18n.init()
 
 #初始化初始化结构(...
@@ -55,7 +55,7 @@ for lang in locales
   #grunt_config.jade[lang].options.data = grunt_config.jade.compile.options.data.clone()
   grunt_config.jade[lang].options.data.locale = lang
 
-log grunt_config.jade.zh_CN.options
+#log grunt_config.jade.zh_CN.options
 
 for file in fs.readdirSync input_directory
   if file.toLowerCase().slice(-5)=='.jade' && fs.lstatSync("#{input_directory}/#{file}").isFile()
