@@ -47,7 +47,7 @@ grunt_config =
           debug: false
       files: {}
 
-# 自动添加 webroot/*.jade 文件进行多语言转换
+# 自动添加 webroot/*.jade 文件进入转换列表，支持当前设定多语言
 fs = require 'fs'
 
 grunt_modules.push 'grunt-contrib-jade'
@@ -63,8 +63,13 @@ delete grunt_config.jade.compile
 for file in fs.readdirSync input_directory
   if file.toLowerCase().slice(-5)=='.jade' && fs.lstatSync("#{input_directory}/#{file}").isFile()
     for lang in locales
-      grunt_config.jade[lang].files["#{output_directory}#{file.slice(0, -5)}.html.#{lang}"] = ["#{input_directory}/#{file}", "#{input_directory}/template/*.jade"]
+      grunt_config.jade[lang].files["#{output_directory}#{file.slice(0, -5)}.html.#{lang}"] = ["#{input_directory}/#{file}"] #, "#{input_directory}/template/*.jade"]
 
+# 自动添加 webroot/css/*.stylus 编译成.css文件并进行合并
+
+grunt_modules.push ''
+
+# 输出给Grunt使用的函数
 module.exports = (grunt) ->
 
   # 载入包信息
