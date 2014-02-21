@@ -1,0 +1,19 @@
+- var page_tabs = {  "joinus":"加入游戏", "rules":"规则", "plugins":"插件", "recommends":"推荐资源", "gallery":"世界景观", "faq":"常见问题", "about":"关于" }
+
+nav.top-bar(data-topbar)
+  ul.title-area
+    li.name
+      h1
+        a(href='./')= __("喵窝")
+    li.toggle-topbar.menu-icon
+      a(href='#')= __("菜单")
+  section.top-bar-section
+    //- Left Nav Section
+    ul.left
+      - for (tab in page_tabs)
+        li(class=(page_name == tab ? "active" : ""))
+          a(href='./'+tab+'.html')= __(page_tabs[tab])
+    //- Right Nav Section
+    ul.right
+      li
+        a(href='http://mcmap.90g.org', target='_blank')= __("世界地图") +  " >>"

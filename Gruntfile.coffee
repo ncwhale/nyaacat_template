@@ -1,6 +1,6 @@
 #在此配置生成参数
 input_directory = 'webroot/'
-locales = ['zh_CN', 'en', 'ca']
+locales = ['zh-cn', 'en', 'ca']
 output_directory = '../nyaacat_static_page/'
 grunt_modules = ['grunt-contrib-concat', 'grunt-css']
 
@@ -20,7 +20,7 @@ i18n = require 'i18n'
 #配置i18n参数
 i18n.configure
   locales: locales 
-  defaultLocale: 'zh_CN'
+  defaultLocale: locales[0]
   directory: './webroot/locales'
   updateFiles: true
   indent: '  '

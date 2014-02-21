@@ -1,11 +1,14 @@
 extends template/layout
 
 block head_extend
-  title= __("喵窝") + " - " +  __("加入我们")
+  - var sub_title = "加入游戏"
+  title= __("喵窝") + " - " +  __(sub_title)
 
-include template/navbar
+block nav_bar
+  - var page_name = 'joinus'
+  include template/navbar
 
 block content
-  h1 Join us now.
+  h1 Join the game now! #{sub_title} #{page_name}
 
 include template/footer
