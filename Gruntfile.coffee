@@ -1,6 +1,6 @@
 #在此配置生成参数
 input_directory = 'webroot/'
-locales = ['zh-CN', 'en', 'ca']
+locales = ['zh-cn', 'en', 'ca']
 output_directory = '../nyaacat_static_page/'
 grunt_modules = ['grunt-contrib-concat', 'grunt-css']
 
