@@ -10,9 +10,9 @@ nav.top-bar(data-topbar)
   section.top-bar-section
     //- Left Nav Section
     ul.left
-      - for (tab in page_tabs)
+      each tab_name, tab in page_tabs
         li(class=(page_name == tab ? "active" : ""))
-          a(href='./'+tab+'.html')= __(page_tabs[tab])
+          a(href='./'+tab+'.html')= __(tab_name)
     //- Right Nav Section
     ul.right
       li

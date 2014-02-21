@@ -1,8 +1,12 @@
 #在此配置生成参数
-input_directory = 'webroot/'
 locales = ['zh-cn', 'en', 'ca']
+
+input_directory = 'webroot/'
 output_directory = '../nyaacat_static_page/'
-grunt_modules = ['grunt-contrib-concat', 'grunt-css']
+
+grunt_modules = []
+grunt_tasks = []
+grunt_config = {}
 
 #伪对象拷贝解构
 clone = (s)->
@@ -27,17 +31,13 @@ i18n.configure
   extension: '.json'
 i18n.init()
 
-#初始化初始化结构(...
-grunt_config =
-  concat:
-    all:
-      src: []
-      dest: "#{output_directory}css/all.css"
-  cssmin:
-    all_min:
-      src: "#{output_directory}css/all.css"
-      dest:"#{output_directory}css/all-min.css"
-  jade:
+# 自动添加 webroot/*.jade 文件进入转换列表，支持当前设定多语言
+fs = require 'fs'
+
+grunt_modules.push 'grunt-contrib-jade'
+grunt_tasks.push 'jade'
+
+jade_config =
     compile:
       options:
         data:
@@ -47,29 +47,65 @@ grunt_config =
           debug: false
       files: {}
 
-# 自动添加 webroot/*.jade 文件进入转换列表，支持当前设定多语言
-fs = require 'fs'
-
-grunt_modules.push 'grunt-contrib-jade'
-
 #生成语言参数模板
 for lang in locales
-  grunt_config.jade[lang] = clone(grunt_config.jade.compile)
-  grunt_config.jade[lang].options.data.locale = lang
+  jade_config[lang] = clone(jade_config.compile)
+  jade_config[lang].options.data.locale = lang
 
 #狡兔死，走狗烹
-delete grunt_config.jade.compile
+delete jade_config.compile
 
 for file in fs.readdirSync input_directory
   if file.toLowerCase().slice(-5)=='.jade' && fs.lstatSync("#{input_directory}/#{file}").isFile()
     for lang in locales
-      grunt_config.jade[lang].files["#{output_directory}#{file.slice(0, -5)}.html.#{lang}"] = ["#{input_directory}/#{file}"] #, "#{input_directory}/template/*.jade"]
+      jade_config[lang].files["#{output_directory}#{file.slice(0, -5)}.html.#{lang}"] = ["#{input_directory}/#{file}"] #, "#{input_directory}/template/*.jade"]
+
+grunt_config['jade'] = jade_config
 
 # 自动添加 webroot/css/*.stylus 编译成.css文件并进行合并
-
 grunt_modules.push 'grunt-contrib-stylus'
+grunt_tasks.push 'stylus'
 
+stylus_config =
+  compile:
+    options:
+      paths: []
+      use: []
+      import: []
+    files: {}
 
+for file in fs.readdirSync "#{input_directory}/css/"
+  if file.toLowerCase().slice(-5)=='.styl' && fs.lstatSync("#{input_directory}/css/#{file}").isFile()
+    stylus_config.compile.files["#{input_directory}/css/#{file.slice(0,-5)}.css"] = "#{input_directory}/css/#{file}"
+
+# 添加配置节
+grunt_config['stylus'] = stylus_config;
+
+# 自动查找并组合所有.css 文件
+grunt_modules.push 'grunt-contrib-concat'
+grunt_tasks.push 'concat'
+
+concat_config =
+  all:
+    src: []
+    dest: "#{output_directory}css/all.css"
+
+for file in fs.readdirSync "#{input_directory}/css/"
+  if file.toLowerCase().slice(-4)=='.css' && fs.lstatSync("#{input_directory}/css/#{file}").isFile()
+    concat_config.all.src.push "#{input_directory}/css/#{file}"
+
+grunt_config['concat'] = concat_config
+
+# 将最终目标css文件进行压缩
+grunt_modules.push 'grunt-css'
+grunt_tasks.push 'cssmin'
+
+cssmin_config = 
+  all_min:
+    src: "#{output_directory}css/all.css"
+    dest:"#{output_directory}css/all-min.css"
+
+grunt_config['cssmin'] = cssmin_config
 
 # 输出给Grunt使用的函数
 module.exports = (grunt) ->
@@ -83,7 +119,7 @@ module.exports = (grunt) ->
   #载入对应库文件
   grunt.loadNpmTasks task for task in grunt_modules
 
-  grunt.registerTask('default', ['concat', 'cssmin', 'jade']);
+  grunt.registerTask('default', grunt_tasks);
 
   #无返回值
   return
