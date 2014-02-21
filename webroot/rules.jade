@@ -1,15 +1,15 @@
 extends template/layout
 
 block head_extend
-  - var sub_title = "加入游戏"
+  - var sub_title = "游戏规则"
   title= __("喵窝") + " - " +  __(sub_title)
 
 block nav_bar
-  - var page_name = 'joinus'
+  - var page_name = 'rules'
   include template/navbar
 
 block content
-  h1 Join the game now!  #{filename}
+  h1 Join the game now! #{sub_title} #{page_name}
 
 block footer
   include template/footer

@@ -1,6 +1,6 @@
 #在此配置生成参数
 input_directory = 'webroot/'
-locales = ['zh-cn', 'en', 'ca']
+locales = ['zh-CN', 'en', 'ca']
 output_directory = '../nyaacat_static_page/'
 grunt_modules = ['grunt-contrib-concat', 'grunt-css']
 
@@ -67,7 +67,9 @@ for file in fs.readdirSync input_directory
 
 # 自动添加 webroot/css/*.stylus 编译成.css文件并进行合并
 
-grunt_modules.push ''
+grunt_modules.push 'grunt-contrib-stylus'
+
+
 
 # 输出给Grunt使用的函数
 module.exports = (grunt) ->
