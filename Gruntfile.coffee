@@ -1,5 +1,6 @@
 #在此配置生成参数
 locales = ['zh-cn', 'en', 'ca']
+locales_directory = './webroot/locales'
 
 input_directory = 'webroot/'
 output_directory = '../nyaacat_static_page/'
@@ -25,7 +26,7 @@ i18n = require 'i18n'
 i18n.configure
   locales: locales 
   defaultLocale: locales[0]
-  directory: './webroot/locales'
+  directory: "#{locales_directory}"
   updateFiles: true
   indent: '  '
   extension: '.json'
