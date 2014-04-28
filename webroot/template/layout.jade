@@ -1,10 +1,15 @@
 doctype html
-html(lang=setLocale(locale))
+html.no-js(lang=setLocale(locale))
   head
     meta(charset="UTF-8")
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
     link(rel="stylesheet", type="text/css", href=debug?"css/all.css":"css/all-min.css")
     block head_extend
+    script(src='bower_components/modernizr/modernizr.js')
   body
     block nav_bar
     block content
     block footer
+    script(src='bower_components/modernizr/modernizr.js')
+    script(src='bower_components/jquery/dist/jquery.min.js')
+    script(src='bower_components/foundation/js/foundation.min.js')
